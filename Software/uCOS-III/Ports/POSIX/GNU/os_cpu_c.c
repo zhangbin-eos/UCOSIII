@@ -193,14 +193,18 @@ void  OSIdleTaskHook (void)
 
 void  OSInitHook (void)
 {
-    struct  rlimit  rtprio_limits;
+//    struct  rlimit  rtprio_limits;
 
 
-    ERR_CHK(getrlimit(RLIMIT_RTPRIO, &rtprio_limits));
-    if (rtprio_limits.rlim_cur != RLIM_INFINITY) {
-        printf("Error: RTPRIO limit is too low. Set to 'unlimited' via 'ulimit -r' or /etc/security/limits.conf\r\n");
-        exit(-1);
-    }
+//    ERR_CHK(getrlimit(RLIMIT_RTPRIO, &rtprio_limits));
+//    if (rtprio_limits.rlim_cur != RLIM_INFINITY) {
+//        printf("Error: RTPRIO limit is too low. Set to 'unlimited' via 'ulimit -r' or /etc/security/limits.conf\r\n");
+//        exit(-1);
+//    }
+    struct sched_param param;
+
+    param.__sched_priority = sched_get_priority_max(SCHED_RR);
+    ERR_CHK(sched_setscheduler(getpid(),SCHED_RR, &param));
 
     CPU_IntInit();                                              /* Initialize critical section objects.                 */
 }
