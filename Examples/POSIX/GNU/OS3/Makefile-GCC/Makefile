@@ -1,7 +1,7 @@
 
 include build.cfg
 
-all:$(TARGET)
+all:$(TARGET) install
 
 $(TARGET):$(OBJS) $(CPPOBJS)
 	@echo  "\nCFLAGS=$(CFLAGS)\n"
@@ -18,9 +18,8 @@ $(CPPOBJS):%.o:%.cpp
 	@echo "CXX $@"
 	@$(CXX) -c $^ -o $@ $(CFLAGS)
 
-packet:
-	./packet.sh  Packet-sh/  VS-1616DN-EM_VS-3232DN-EM_VS-6464DN-EM $(VERSION) 256
-
+install:
+	cp -rf $(TARGET) $(RELEASE)
 
 clean:
 	$(RM) $(TARGET)

@@ -5,7 +5,7 @@
 ### C ###
 # Prerequisites
 *.d
-
+tags
 # Object files
 *.o
 *.ko
