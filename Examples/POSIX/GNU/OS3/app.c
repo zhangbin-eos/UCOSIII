@@ -31,6 +31,7 @@
 *                                             INCLUDE FILES
 *********************************************************************************************************
 */
+#ifdef DEMO_CODE
 
 #include  <app_cfg.h>
 #include  <os.h>
@@ -39,6 +40,9 @@
 #include  <lib_mem.h>
 #include  <lib_math.h>
 
+#else
+	#include "app_task.h"
+#endif//DEMO_CODE
 
 /*
 *********************************************************************************************************
@@ -52,19 +56,23 @@
 *                                       LOCAL GLOBAL VARIABLES
 *********************************************************************************************************
 */
+#ifdef DEMO_CODE
 
 static  OS_TCB        App_TaskStartTCB;
 static  CPU_STK_SIZE  App_TaskStartStk[APP_CFG_TASK_START_STK_SIZE];
 
+#endif//DEMO_CODE
 
 /*
 *********************************************************************************************************
 *                                      LOCAL FUNCTION PROTOTYPES
 *********************************************************************************************************
 */
+#ifdef DEMO_CODE
 
 static  void  App_TaskStart          (void       *p_arg);
 
+#endif//DEMO_CODE
 
 /*
 *********************************************************************************************************
@@ -82,7 +90,7 @@ static  void  App_TaskStart          (void       *p_arg);
 * Note(s)     : none.
 *********************************************************************************************************
 */
-
+#ifdef DEMO_CODE
 int  main (void)
 {
     OS_ERR  err;
@@ -108,7 +116,34 @@ int  main (void)
     while(DEF_ON){												/* Should Never Get Here							    */
     };
 }
+#else
 
+int  main (void)
+{
+    OS_ERR  err;
+
+    OSInit(&err);                                               /* Initialize "uC/OS-III, The Real-Time Kernel"         */
+
+    CPU_Init();
+    Mem_Init();                                                 /* Initialize the Memory Management Module              */
+    Math_Init();                                                /* Initialize the Mathematical Module                   */
+
+    OS_CPU_SysTickInit();
+
+    /*create task*/
+    
+    app_task_first_init (&err);
+    app_task_secend_init(&err);
+
+    /*create task over*/
+
+    OSStart(&err);                                              /* Start multitasking (i.e. give control to uC/OS-III). */
+
+    while(DEF_ON){												/* Should Never Get Here							    */
+    };
+}
+
+#endif //DEMO_CODE
 /*
 *********************************************************************************************************
 *                                          App_TaskStart()
@@ -126,6 +161,7 @@ int  main (void)
 *                   used.  The compiler should not generate any code for this statement.
 *********************************************************************************************************
 */
+#ifdef DEMO_CODE
 
 static  void  App_TaskStart (void *p_arg)
 {
@@ -146,3 +182,4 @@ static  void  App_TaskStart (void *p_arg)
                       &os_err);
     }
 }
+#endif //DEMO_CODE
