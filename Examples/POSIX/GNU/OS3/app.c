@@ -133,7 +133,6 @@ int  main (void)
     /*create task*/
     
     app_task_first_init (&err);
-    app_task_secend_init(&err);
 
     /*create task over*/
 
